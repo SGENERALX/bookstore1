@@ -1,3 +1,7 @@
+'''
+Created on 23-Feb-2016
+@author: parkar_s
+'''
 import os
 from setuptools import setup
 
@@ -9,15 +13,17 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
-    name='WeLearn',
+    name='Online Book Store',
     version=1.0,
-    author = "Deprez",
-    author_email = "deprez@gmail.com",
-    url='http://localhost',
+    url='https://github.com/siddhiparkar151992/Online-Book-Store',
+    author='Siddhi Parkar',
+    author_email='siddhiparkar15@gmail.com',
     description='A shopping cart',
+    long_description=__doc__,
     include_package_data=True,
     zip_safe=False,
     platforms='any',
+    packages=['BookStore'],
     install_requires=[
         'virtualenv>=14.0.3',
         'Flask>=0.10.1',
@@ -26,4 +32,5 @@ setup(
         'pymongo>=3.2.3',
         'jsonpickle>= 0.9.3'
     ]
+      
 )
