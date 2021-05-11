@@ -1,44 +1,56 @@
-delimeter//
-create procedure get_books(IN type varchar(20), IN lefttable varchar(15),IN jointable varchar(20), IN jointype varchar(10),IN onleft varchar(10), IN onright varchar(20),In tocompare varchar(20))
+DROP PROCEDURE IF EXISTS get_books;
 
-begin
-	set @fromjoin = lefttable
-	set @tojoin = jointable
-	set @jointype = jointype
-	set @onleft = onleft
-	set @onright = onright
-	set @wherequery = wherequery
-	set @type = type
-	set @tocompare = tocompare
-	if type = 'all' then 
-		set @select = "books.title ,books.category_id, category.name"
-	case @type
+DELIMITER //
+
+create procedure get_books(IN type varchar(20), IN lefttable varchar(15),IN jointable varchar(20), IN jointype varchar(10),IN onleft varchar(10), IN onright varchar(20),IN tocompare varchar(20), IN wherequery varchar(20))
+
+BEGIN
+	SET @fromjoin = lefttable;
+	SET @tojoin = jointable;
+	SET @jointype = jointype;
+	SET @onleft = onleft;
+	SET @onright = onright;
+	SET @wherequery = wherequery;
+	SET @type = type;
+	SET @tocompare = tocompare;
+	
+	CASE @type
 		when 'all' then
-			set @select = 'books.title ,books.category_id, category.name'
-			set @tocompare = ''
-			set @wherequery = '' 
+			SET @select = 'books.Title, books.Category_id, category.name';
+			SET @tocompare = '';
+			SET @wherequery = '';
 		when 'popular' then
-			set @select = 'books.isbn, title, authors, publisher, DATE_FORMAT(yop,'%Y-%m-%d') as yop, available_copies, price, format, keywords, subject,image_loc, category_id'
-			set @tocompare = concat('where ',@tojoin,'.isbn = ',@fromjoin,'.isbn')
-			set @wherequery = '' 
+			SET @select = 'books.ISBN, Title, Authors, Publisher, DATE_FORMAT(YOP, "%Y-%m-%d") as YOP, Available_copies, Price, Format, Keywords, Subject, image_loc, Category_id';
+			SET @tocompare = concat('where ', @tojoin,'.ISBN = ', @fromjoin, '.ISBN');
+			SET @wherequery = '';
 		when 'bycategory' then 
-			set @select = 'isbn, title, authors, publisher, DATE_FORMAT(yop,'%Y-%m-%d') as yop, available_copies, price, format, keywords, subject,image_loc,cc.name as childcategory'
-			set @tocompare = conact('where ', @tojoin,'.cat_id = ',@fromjoin,'.category_id')
+			SET @select = 'ISBN, Title, Authors, Publisher, DATE_FORMAT(YOP, "%Y-%m-%d") as YOP, Available_copies, Price, Format, Keywords, Subject, image_loc, cc.name as childcategory';
+			SET @tocompare = conact('where ', @tojoin, '.cat_id = ', @fromjoin, '.Category_id');
+		END CASE;
 
-	set @sql_stmt = concat('select ',@select,' ','from books',' ',@jointype,' join ', @tojoin,' on ',@tocompare, @wherequery)
-	
-	
+	SET @sql_stmt = concat('select ', @select, ' from books ', @jointype, ' join ', @tojoin, ' on ', @tocompare, @wherequery);
 
-"select books.title ,books.category_id, category.name from books left join category on books.category_id = category.cat_id;"
-"select books.isbn as isbn, title, authors, publishe]r, DATE_FORMAT(yop,'%Y-%m-%d') as yop, available_copies, price, format, keywords, subject,image_loc, category_id"
-                     "from books"
-                     " left join rating"
-                     " on rating.isbn = books.isbn"
-                     " where rating.score <={} and rating.score> {};"
+	SELECT @sql_stmt AS ReturnQuery;
+
+END //
 
 
-"select book.isbn as isbn, title, authors, publisher, DATE_FORMAT(yop,'%Y-%m-%d') as yop, available_copies, price, format, keywords, subject,image_loc,cc.name as childcategory "
-                    "from books"
-                    " inner join category cc "
-                    "on cc.cat_id = books.category_id "
-                    "where cc.parent={} or category_id = {};"
+
+-- SELECT @sql_stmt AS ReturnQuery;
+--	EXEC (@sql_stmt);
+
+-- if type = 'all' then 
+-- SET @select = "books.Title, books.Category_id, category.name";
+
+-- "select books.title ,books.Category_id, category.name from books left join category on books.Category_id = category.cat_id;"
+-- "select books.ISBN as ISBN, title, Authors, publishe]r, DATE_FORMAT(YOP,'%Y-%m-%d') as YOP, Available_copies, Price, Format, Keywords, Subject, image_loc, Category_id"
+--                      "from books"
+--                      " left join rating"
+--                      " on rating.ISBN = books.ISBN"
+--                      " where rating.score <={} and rating.score> {};"
+
+-- "select book.ISBN as ISBN, title, Authors, Publisher, DATE_FORMAT(YOP,'%Y-%m-%d') as YOP, Available_copies, Price, Format, Keywords, Subject, image_loc, cc.name as childcategory "
+--                     "from books"
+--                     " inner join category cc "
+--                     "on cc.cat_id = books.Category_id "
+--                     "where cc.parent={} or Category_id = {};"

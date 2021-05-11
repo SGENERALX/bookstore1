@@ -1,13 +1,13 @@
 '''
 Created on 23-Feb-2016
-
 @author: parkar_s
 '''
 from setuptools import setup
+
 setup(
     name='Online Book Store',
     version=1.0,
-    url='https://github.com/siddhiparkar151992/Py_Shopping_Cart',
+    url='https://github.com/siddhiparkar151992/Online-Book-Store',
     author='Siddhi Parkar',
     author_email='siddhiparkar15@gmail.com',
     description='A shopping cart',
@@ -15,7 +15,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     platforms='any',
-    packages=['BookStore'],
+    packages=['bookstore'],
     install_requires=[
         'virtualenv>=14.0.3',
         'Flask>=0.10.1',
